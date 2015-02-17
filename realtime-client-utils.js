@@ -24,14 +24,25 @@ utils.RealtimeUtils = function(options) {
 utils.RealtimeUtils.prototype = {
 
   /**
-   * clientId and mimeType for this realtime application.
+   * clientId for this realtime application.
    * @const
-   * @type {!Object}
+   * @type {!string}
    */
-  OPTIONS: {
-    clientId: null,
-    mimeType: 'application/vnd.google-apps.drive-sdk'
-  },
+  CLIENT_ID: null,
+
+  /**
+   * MimeType for this realtime application.
+   * @const
+   * @type {!string}
+   */
+  MIME_TYPE: 'application/vnd.google-apps.drive-sdk',
+
+  /**
+   * The interval at which the oauth token will attempt to be refreshed.
+   * @const
+   * @type {!string}
+   */
+  REFRESH_INTERVAL: 1800000, // 30 minutes
 
   /**
    * Required scopes.
@@ -71,7 +82,7 @@ utils.RealtimeUtils.prototype = {
    */
   mergeOptions: function(options) {
     for (var option in options) {
-      this.OPTIONS[option] = options[option];
+      this[option] = options[option];
     }
   },
 
@@ -104,7 +115,7 @@ utils.RealtimeUtils.prototype = {
     window.gapi.client.load('drive', 'v2', function() {
       var insertHash = {
         'resource': {
-          mimeType: that.OPTIONS.mimeType,
+          mimeType: that.mimeType,
           title: title
         }
       };
@@ -173,44 +184,9 @@ utils.RealtimeAuthorizer = function(realtimeUtil) {
   this.util = realtimeUtil;
   this.handleAuthResult = this.handleAuthResult.bind(this);
   this.token = null;
-  this.serverUrl = this.util.getParam('serverUrl');
 };
 
 utils.RealtimeAuthorizer.prototype = {
-
-  /**
-   * Interval when the authorizer will refresh its oauth token.
-   * @const
-   * @private {!number}
-   */
-  REFRESH_INTERVAL: 1800000, // 30 minutes
-
-  /**
-   * True if utils should use the drive sandbox rig.
-   * @type {!boolean}
-   * @export
-   */
-  sandboxUrl: false,
-
-  /**
-   * True if the serverUrl is not standard, that is not sandbox,
-   * canary, or scary.
-   * @type {!boolean}
-   * @export
-   */
-  unknownServerUrl: false,
-
-  /**
-   * Url for a specific server to download the api from.
-   * @private {?(string)}
-   */
-  apiUrl: null,
-
-  /**
-   * Url for a specific server to authenticate with.
-   * @private {?(string)}
-   */
-  serverUrl: null,
 
   /**
    * Starts the authorizer
@@ -242,9 +218,8 @@ utils.RealtimeAuthorizer.prototype = {
     this.onAuthComplete = onAuthComplete;
     // Try with no popups first.
     window.gapi.auth.authorize({
-      client_id: this.util.OPTIONS.clientId,
+      client_id: this.util.clientId,
       scope: this.util.SCOPES,
-      user_id: this.util.OPTIONS.userId,
       immediate: !usePopup
     }, this.handleAuthResult);
   },
@@ -273,6 +248,6 @@ utils.RealtimeAuthorizer.prototype = {
         console.log('Refreshed Auth Token');
       }, false);
       that.refreshAuth();
-    }, this.REFRESH_INTERVAL);
+    }, this.util.REFRESH_INTERVAL);
   }
 };
