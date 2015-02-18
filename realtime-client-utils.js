@@ -1,7 +1,7 @@
 /**
  * Realtime Utils 1.0.0
  * https://developers.google.com/drive/realtime/
- * (c) 2015 Seth Howard
+ * Copyright 2015 Seth Howard, Google Inc. All Rights Reserved.
  * Realtime Utils may be freely distributed under the Apache 2.0 license.
  */
 
