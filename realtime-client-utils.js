@@ -1,9 +1,14 @@
+/**
+ * Realtime Utils 1.0.0
+ * https://developers.google.com/drive/realtime/
+ * (c) 2015 Seth Howard
+ * Realtime Utils may be freely distributed under the Apache 2.0 license.
+ */
 
 /**
  * @fileoverview Common utility functionality for the Google Drive Realtime API,
  * including authorization and file loading.
  */
-
 
 /**
  * Create the utils namespace
