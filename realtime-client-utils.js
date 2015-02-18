@@ -1,4 +1,5 @@
 /**
+ * @license
  * Realtime Utils 1.0.0
  * https://developers.google.com/drive/realtime/
  * Copyright 2015 Seth Howard, Google Inc. All Rights Reserved.
@@ -132,15 +133,10 @@ utils.RealtimeUtils.prototype = {
     window.gapi.client.load('drive', 'v2', function() {
       var insertHash = {
         'resource': {
-          mimeType: that.mimeType,
+          mimeType: that.MIME_TYPE,
           title: title
         }
       };
-
-      if (that.authorizer.unknownServerUrl || that.authorizer.sandboxUrl) {
-        insertHash.root = 'https://content-googleapis-test.sandbox.google.com';
-      }
-
       window.gapi.client.drive.files.insert(insertHash).execute(callback);
     });
   },
