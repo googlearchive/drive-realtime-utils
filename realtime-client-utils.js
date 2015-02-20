@@ -43,31 +43,27 @@ utils.RealtimeUtils.prototype = {
 
   /**
    * clientId for this realtime application.
-   * @const
    * @type {!string}
    */
-  CLIENT_ID: null,
+  clientId: null,
 
   /**
    * MimeType for this realtime application.
-   * @const
    * @type {!string}
    */
-  MIME_TYPE: 'application/vnd.google-apps.drive-sdk',
+  mimeType: 'application/vnd.google-apps.drive-sdk',
 
   /**
    * The interval at which the oauth token will attempt to be refreshed.
-   * @const
    * @type {!string}
    */
-  REFRESH_INTERVAL: 1800000, // 30 minutes
+  refreshInterval: 1800000, // 30 minutes
 
   /**
    * Required scopes.
-   * @const
    * @type {!Array<string>}
    */
-  SCOPES: [
+  scopes: [
     'https://www.googleapis.com/auth/drive.install',
     'https://www.googleapis.com/auth/drive.file'
   ],
@@ -133,7 +129,7 @@ utils.RealtimeUtils.prototype = {
     window.gapi.client.load('drive', 'v2', function() {
       var insertHash = {
         'resource': {
-          mimeType: that.MIME_TYPE,
+          mimeType: that.mimeType,
           title: title
         }
       };
@@ -209,9 +205,33 @@ utils.RealtimeAuthorizer.prototype = {
    */
   start: function(onAuthComplete, usePopup) {
     var that = this;
+    var serverUrl = this.util.getParam('serverUrl');
+    var apiUrl;
+    var config = {};
+    if (serverUrl) {
+      switch (serverUrl) {
+        case 'sandbox':
+          apiUrl = 'https://drive.sandbox.google.com/otservice';
+          serverUrl = this.apiUrl;
+          break;
+        case 'canary':
+          apiUrl = 'https://drive.google.com/otservice/canary';
+          serverUrl = 'https://drive.google.com/otservice';
+          break;
+        case 'scary':
+          apiUrl = 'https://drive.google.com/otservice/scary';
+          serverUrl = 'https://drive.google.com/otservice';
+          break;
+      }
+      config['drive-realtime'] = { 'server' : apiUrl };
+    }
+    var that = this;
     window.gapi.load('auth:client,drive-realtime,drive-share', {
-      config: {},
+      config: config,
       callback: function() {
+        if (that.serverUrl) {
+          gapi.drive.realtime.setServerAddress(that.serverUrl);
+        }
         that.authorize(onAuthComplete, usePopup);
       }
     });
@@ -232,7 +252,7 @@ utils.RealtimeAuthorizer.prototype = {
     // Try with no popups first.
     window.gapi.auth.authorize({
       client_id: this.util.clientId,
-      scope: this.util.SCOPES,
+      scope: this.util.scopes,
       immediate: !usePopup
     }, this.handleAuthResult);
   },
@@ -261,6 +281,6 @@ utils.RealtimeAuthorizer.prototype = {
         console.log('Refreshed Auth Token');
       }, false);
       that.refreshAuth();
-    }, this.util.REFRESH_INTERVAL);
+    }, this.util.refreshInterval);
   }
 };
