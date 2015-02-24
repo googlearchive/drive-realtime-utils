@@ -222,6 +222,8 @@ utils.RealtimeAuthorizer.prototype = {
           apiUrl = 'https://drive.google.com/otservice/scary';
           serverUrl = 'https://drive.google.com/otservice';
           break;
+        default:
+          serverUrl = null;
       }
       config['drive-realtime'] = { 'server' : apiUrl };
     }
