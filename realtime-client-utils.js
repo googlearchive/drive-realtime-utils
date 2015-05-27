@@ -1,7 +1,7 @@
 /**
  * @license
  * Realtime Utils 1.0.0
- * https://developers.google.com/drive/realtime/
+ * https://developers.google.com/google-apps/realtime/overview
  * Copyright 2015 Seth Howard, Google Inc. All Rights Reserved.
  * Realtime Utils may be freely distributed under the Apache 2.0 license.
  *
@@ -19,7 +19,7 @@
  */
 
 /**
- * @fileoverview Common utility functionality for the Google Drive Realtime API,
+ * @fileoverview Common utility functionality for the Google Realtime API,
  * including authorization and file loading.
  */
 
@@ -28,8 +28,8 @@
  */
 window.utils = {};
 
-/** @constructor
- *
+/**
+ * @constructor
  * @param {!Object} options for the realtime utility. One key is mandatory:
  *
  *  1) "clientId" the client id from the APIs console.
@@ -70,7 +70,7 @@ utils.RealtimeUtils.prototype = {
 
   /**
    * Initializes RealtimeUtils
-   * @param {Object} options containing required utiltiy keys.
+   * @param {Object} options containing required utility keys.
    * @private
    */
   init: function(options) {
@@ -82,7 +82,7 @@ utils.RealtimeUtils.prototype = {
   /**
    * Kicks off the authorization process
    * @param {!Function} onAuthComplete callback invoked after authorizing.
-   * @param {!boolean} usePopup true if authentication via a popup window.
+   * @param {!boolean} usePopup true if authenticating via a popup window.
    * @export
    */
   authorize: function(onAuthComplete, usePopup) {
@@ -90,7 +90,7 @@ utils.RealtimeUtils.prototype = {
   },
 
   /**
-   * Merges passed in options with default options.
+   * Merges passed-in options with default options.
    * @param {Object} options that will be merged with existing options.
    * @private
    */
@@ -103,7 +103,7 @@ utils.RealtimeUtils.prototype = {
   /**
    * Examines url query parameters for a specific parameter.
    * @param {!string} urlParam to search for in url parameters.
-   * @return {?(string)} returns match as a string of null if no match.
+   * @return {?(string)} returns match as a string or null if no match.
    * @export
    */
   getParam: function(urlParam) {
@@ -183,8 +183,8 @@ utils.RealtimeUtils.prototype = {
 };
 
 
-/** @constructor
-  *
+/**
+  * @constructor
   * @param {utils.RealtimeUtils} realtimeUtil that owns this
   *     RealtimeAuthorizer instance.
   *
@@ -200,40 +200,13 @@ utils.RealtimeAuthorizer.prototype = {
   /**
    * Starts the authorizer
    * @param {!Function} onAuthComplete callback invoked after authorizing.
-   * @param {boolean} usePopup true if authentication via a popup window.
+   * @param {boolean} usePopup true if authenticating via a popup window.
    * @export
    */
   start: function(onAuthComplete, usePopup) {
     var that = this;
-    var serverUrl = this.util.getParam('serverUrl');
-    var apiUrl;
-    var config = {};
-    if (serverUrl) {
-      switch (serverUrl) {
-        case 'sandbox':
-          apiUrl = 'https://drive.sandbox.google.com/otservice';
-          serverUrl = this.apiUrl;
-          break;
-        case 'canary':
-          apiUrl = 'https://drive.google.com/otservice/canary';
-          serverUrl = 'https://drive.google.com/otservice';
-          break;
-        case 'scary':
-          apiUrl = 'https://drive.google.com/otservice/scary';
-          serverUrl = 'https://drive.google.com/otservice';
-          break;
-        default:
-          serverUrl = null;
-      }
-      config['drive-realtime'] = { 'server' : apiUrl };
-    }
-    var that = this;
     window.gapi.load('auth:client,drive-realtime,drive-share', {
-      config: config,
       callback: function() {
-        if (that.serverUrl) {
-          gapi.drive.realtime.setServerAddress(that.serverUrl);
-        }
         that.authorize(onAuthComplete, usePopup);
       }
     });
@@ -246,7 +219,7 @@ utils.RealtimeAuthorizer.prototype = {
   /**
    * Attempts to authorize.
    * @param {!Function} onAuthComplete callback invoked after authorizing.
-   * @param {boolean} usePopup true if authentication via a popup window.
+   * @param {boolean} usePopup true if authenticating via a popup window.
    * @private
    */
   authorize: function(onAuthComplete, usePopup) {
@@ -273,7 +246,7 @@ utils.RealtimeAuthorizer.prototype = {
   },
 
   /**
-   * Sets a timer that will refreshes the oauth token after an interval.
+   * Sets a timer that will refresh the oauth token after an interval.
    * @private
    */
   refreshAuth: function() {
