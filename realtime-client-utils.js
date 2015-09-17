@@ -151,7 +151,7 @@ utils.RealtimeUtils.prototype = {
     window.gapi.drive.realtime.load(documentId, function(doc) {
       window.doc = doc;  // Debugging purposes
       onFileLoaded(doc);
-    }, initializeModel, this.onError);
+    }, initializeModel, this.onError.bind(this));
   },
 
   /**
