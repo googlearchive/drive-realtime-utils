@@ -70,7 +70,7 @@ This function will create a new Realtime file and store it in Google Drive.
     <td>
       The name of the newly created document. Note that all new files are
       created using the <code>'application/vnd.google-apps.drive-sdk'</code>
-      mime type. To override this mimetype, pass in mimeType and a stirng value
+      mime type. To override this mimetype, pass in mimeType and a string value
       as an option when instantiating RealtimeUtils.
     </td>
   </tr>
@@ -86,7 +86,7 @@ This function will create a new Realtime file and store it in Google Drive.
 </table>
 
 ### RealtimeUtils.load(documentId, onFileLoaded, initializeModel)
-Load a new document that is persisted in Google Drive.
+Load a new or existing document that is persisted in Google Drive.
 <table>
   <tr>
     <th>Name</th>
@@ -105,7 +105,7 @@ Load a new document that is persisted in Google Drive.
     <td>Function</td>
     <td>
       The function that will be invoked after the file has been loaded. See the
-      official [Realtime documentation](https://devsite.googleplex.com/google-apps/realtime/reference/gapi.drive.realtime#.load)
+      official <a href="https://devsite.googleplex.com/google-apps/realtime/reference/gapi.drive.realtime#.load">Realtime documentation</a>
       for more information regarding arguments.
     </td>
   </tr>
@@ -114,7 +114,7 @@ Load a new document that is persisted in Google Drive.
     <td>Function</td>
     <td>
       If this is the first time this document has been opened, the Realtime
-      model will be initialized. See the official [Realtime Documentation](https://devsite.googleplex.com/google-apps/realtime/reference/gapi.drive.realtime#.load)
+      model will be initialized. See the official <a href="https://devsite.googleplex.com/google-apps/realtime/reference/gapi.drive.realtime#.load">Realtime Documentation</a>
       for more information regarding arguments.
     </td>
   </tr>
