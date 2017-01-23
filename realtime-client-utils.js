@@ -163,7 +163,7 @@ utils.RealtimeUtils.prototype = {
   onError: function(error) {
     if (error.type == window.gapi.drive.realtime.ErrorType
         .TOKEN_REFRESH_REQUIRED) {
-      this.authorizer.authorize(function() {
+      this.authorize(function() {
         console.log('Error, auth refreshed');
       }, false);
     } else if (error.type == window.gapi.drive.realtime.ErrorType
@@ -251,11 +251,10 @@ utils.RealtimeAuthorizer.prototype = {
    */
   refreshAuth: function() {
     var that = this;
-    this.authTimer = setTimeout(function() {
+    this.authTimer = setInterval(function() {
       that.authorize(function() {
         console.log('Refreshed Auth Token');
       }, false);
-      that.refreshAuth();
     }, this.util.refreshInterval);
   }
 };
