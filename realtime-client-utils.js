@@ -1,6 +1,6 @@
 /**
  * @license
- * Realtime Utils 1.0.0
+ * Realtime Utils 1.0.1
  * https://developers.google.com/google-apps/realtime/overview
  * Copyright 2015 Seth Howard, Google Inc. All Rights Reserved.
  * Realtime Utils may be freely distributed under the Apache 2.0 license.
@@ -163,7 +163,7 @@ utils.RealtimeUtils.prototype = {
   onError: function(error) {
     if (error.type == window.gapi.drive.realtime.ErrorType
         .TOKEN_REFRESH_REQUIRED) {
-      this.authorizer.authorize(function() {
+      this.authorize(function() {
         console.log('Error, auth refreshed');
       }, false);
     } else if (error.type == window.gapi.drive.realtime.ErrorType
@@ -251,11 +251,10 @@ utils.RealtimeAuthorizer.prototype = {
    */
   refreshAuth: function() {
     var that = this;
-    this.authTimer = setTimeout(function() {
+    this.authTimer = setInterval(function() {
       that.authorize(function() {
         console.log('Refreshed Auth Token');
       }, false);
-      that.refreshAuth();
     }, this.util.refreshInterval);
   }
 };
