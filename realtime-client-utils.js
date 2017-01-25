@@ -1,6 +1,6 @@
 /**
  * @license
- * Realtime Utils 1.0.0
+ * Realtime Utils 1.0.1
  * https://developers.google.com/google-apps/realtime/overview
  * Copyright 2015 Seth Howard, Google Inc. All Rights Reserved.
  * Realtime Utils may be freely distributed under the Apache 2.0 license.
